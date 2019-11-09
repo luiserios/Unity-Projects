@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Powerup : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 4f;
+    private float _speed = 3.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -16,38 +16,30 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //move down at 4 meters per second
+        //move down at a speed of 3 (adjust in the inspector)
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        //if bottom of screen
-        //respawn at top with a new random x position
-        if(transform.position.y < -6f)
+        //when we leave screen, destroy this object
+        if (transform.position.y < -6f)
         {
-            float randomX = Random.Range(-7.5f, 7.5f);
-            transform.position = new Vector3(randomX, 8f, 0);
+            Destroy(this.gameObject);
         }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //damage player
         if (other.tag == "Player")
         {
+            //communicate with player script
             Player player = other.transform.GetComponent<Player>();
 
             //Null check that player exists
             if (player != null)
             {
-                player.Damage();
+                player.TripleShotActive();
             }
 
-            Destroy(this.gameObject);
-        }
-       
-        //destroy enemy
-        if(other.tag == "Laser")
-        {
-            Destroy(other.gameObject);
             Destroy(this.gameObject);
         }
     }

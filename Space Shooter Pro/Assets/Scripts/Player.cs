@@ -4,26 +4,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    //public or private reference
-    //data type (int, float, bool, string)
-    //every variable has a name
-    //optional value assigned
     [SerializeField]
     private float _speed = 3.5f;
     [SerializeField]
     private GameObject _laserPrefab;
+    [SerializeField]
+    private GameObject _tripleShotPrefab;
     [SerializeField]
     private float _firerate = 0.5f;
     private float _canfire = -1f;
     [SerializeField]
     private int _lives = 3;
     private SpawnManager _spawnManager;
-
+    [SerializeField]
+    private bool _isTripleShotActive = false;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        //take the current position = new position (0, 0, 0)
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();//Find the gameObject. then get component
 
@@ -38,6 +37,7 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
 
+        //fire laser if space key is pressed
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canfire)
         {
             FireLaser();
@@ -87,10 +87,20 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
-        //if I hit space key
-        //spawn gameObject
         _canfire = Time.time + _firerate;
-        Instantiate(_laserPrefab, (transform.position + new Vector3(0, 1.05f, 0)), Quaternion.identity);
+        
+        //if  tripleshotActive is true
+        //fire 3 lasers (triple shot prefab)
+        if (_isTripleShotActive == true)
+        {
+            //instantiate for the triple shot
+            Instantiate(_tripleShotPrefab, (transform.position), Quaternion.identity);
+        }
+        //else fire 1 laser
+        else
+        {
+            Instantiate(_laserPrefab, (transform.position + new Vector3(0, 1.05f, 0)), Quaternion.identity);
+        }      
     }
 
     public void Damage()
@@ -106,5 +116,21 @@ public class Player : MonoBehaviour
             //let them know to stop spawning
             Destroy(this.gameObject);
         }
+    }
+
+    public void TripleShotActive()
+    {
+        //start the power down coroutine for triple shot
+        _isTripleShotActive = true;
+        StartCoroutine(TripleShotPowerDownRoutine());
+    }
+
+    //IEnumerator TripleShotPowerDownRoutine
+    //wait for 5 seconds
+    //set the triple shot to false
+    IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _isTripleShotActive = false;
     }
 }
