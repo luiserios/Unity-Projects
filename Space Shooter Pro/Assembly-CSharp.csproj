@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\Powerup.cs" />
     <Compile Include="Assets\Scripts\SpawnManager.cs" />
+    <Compile Include="Assets\Scripts\UIManager.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/luise/Desktop/Unity Projects/Unity-Projects/Space Shooter Pro/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

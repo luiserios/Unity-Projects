@@ -48,7 +48,7 @@ public class Powerup : MonoBehaviour
                         player.SpeedActive();
                         break;
                     case 2:
-                        Debug.Log("Collected Shileds");
+                        player.SheildActive();
                         break;
                     default:
                         Debug.Log("Default Value");
