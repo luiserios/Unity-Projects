@@ -135,7 +135,9 @@ public class Player : MonoBehaviour
             return;
         }
 
-        _lives --;
+        _lives--;
+
+        _uimanager.UpdateLives(_lives);
 
         //check if dead
         //destroy player
